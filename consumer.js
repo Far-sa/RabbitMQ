@@ -9,14 +9,15 @@ async function receiveFromProducer () {
   const queueName = 'Task'
   await channel.assertQueue(queueName, { durable: true })
   let index = 0
-  await channel.consume(
-    queueName,
-    msg => {
-      console.log(`${index}`, msg.content.toString())
+  await channel.consume(queueName, msg => {
+    const random = Math.floor(Math.random() * 10)
+    const timeOut = 1000 + random
+    setTimeout(() => {
+      console.log(`${index} :`, msg.content.toString())
       index++
-    },
-    { noAck: true }
-  )
+      channel.ack(msg)
+    }, timeOut)
+  })
 }
 
 receiveFromProducer()

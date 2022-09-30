@@ -11,11 +11,14 @@ async function sendMsgToTask () {
   channel.sendToQueue(queueName, Buffer.from('Hey RabbitMQ'), {
     persistent: true
   })
-
   console.log('message was sent to Server1')
-  setInterval(() => {
-    connection.close()
-    process.exit(0)
-  }, 1000)
+
+  for (let index = 0; index < 15; index++) {
+    sendMsgToTask()
+  }
+
+  // setTimeout(() => {
+  //   connection.close()
+  // }, 1000)
 }
-sendMsgToTask()
+//setInterval(() => sendMsgToTask(), 1000)
